@@ -10,7 +10,7 @@ public class Subscription {
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name="status_id", referencedColumnName = "id")
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
     @Column(nullable = false)

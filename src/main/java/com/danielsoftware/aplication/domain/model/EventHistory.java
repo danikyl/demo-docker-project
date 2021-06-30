@@ -10,11 +10,11 @@ public class EventHistory {
     private Integer id;
 
     @ManyToOne()
-    @JoinColumn(name="subscription_id", referencedColumnName = "id")
+    @JoinColumn(name = "subscription_id", referencedColumnName = "id")
     private Subscription subscription;
 
     @ManyToOne()
-    @JoinColumn(name="status_id", referencedColumnName = "id")
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
     @Column(nullable = false)

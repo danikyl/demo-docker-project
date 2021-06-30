@@ -1,26 +1,5 @@
 version: '3'
 services:
-
-  #MySQL Service
-  db:
-    build: database
-    container_name: db
-    restart: always
-    tty: true
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_DATABASE: main_app
-      MYSQL_USER: user
-      MYSQL_ROOT_PASSWORD: dev
-      MYSQL_PASSWORD: dev
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - my-datavolume:/var/lib/mysql
-    networks:
-      - my-custom-network
-
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
@@ -37,14 +16,13 @@ services:
     build: .
     restart: on-failure
     depends_on:
-      - db
       - rabbitmq
     ports:
       - 8080:8080
     networks:
       - my-custom-network
     environment:
-      spring.datasource.url: "jdbc:mysql://db:3306/main_app?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true"
+      - spring_rabbitmq_host=rabbitmq
 
 #Networks
 networks:

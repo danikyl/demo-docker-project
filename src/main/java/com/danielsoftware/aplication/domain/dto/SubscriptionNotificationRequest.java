@@ -6,11 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class SubscriptionNotificationRequest {
+public class SubscriptionNotificationRequest implements Serializable {
     @JsonProperty("notification_type")
     private String notificationType;
 

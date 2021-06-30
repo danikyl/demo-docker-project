@@ -1,35 +1,5 @@
 version: '3'
 services:
-
-  #MySQL Service
-  db:
-    image: mysql:5.7.22
-    container_name: db-main-app
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: main-app
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: dev
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    networks:
-      - app-network
-    volumes:
-      - my-datavolume:/var/lib/mysql
-
-  myapp-main:
-    build: .
-    restart: on-failure
-    depends_on:
-      - db
-    ports:
-      - 8080:8080
-    networks:
-      - app-network
-
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
@@ -40,12 +10,25 @@ services:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
-      - app-network
+      - my-custom-network
 
-#Docker Networks
+  myapp-main:
+    build: .
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    ports:
+      - 8080:8080
+    networks:
+      - my-custom-network
+    environment:
+      - spring_rabbitmq_host=rabbitmq
+
+#Networks
 networks:
-  app-network:
+  my-custom-network:
     driver: bridge
+
 #Volumes
 volumes:
   dbdata:

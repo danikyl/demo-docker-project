@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class SubscriptionNotificationProducer {
     private final RabbitTemplate rabbitTemplate;
 
-    SubscriptionNotificationProducer(RabbitTemplate rabbitTemplate) {
+    public SubscriptionNotificationProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 

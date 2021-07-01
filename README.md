@@ -1,3 +1,30 @@
+### Instalando
+
+
+```
+git clone https://github.com/juliocesarnt/globo-danikyl.git
+cd globo-danikyl
+``` 
+
+### Compilando e rodando a aplicação
+
+```
+docker-compose up --build -d
+``` 
+
+### Rodando python script para enviar as requisições contendo dados do arquivo "notificacoes.txt" e exibir o estado atual das assinaturas no banco de dados, bem como o histórico de eventos
+
+```
+python sendNotifications.py
+``` 
+ou então
+```
+python3 sendNotifications.py
+``` 
+### To do
+-Adicionar um novo serviço no docker-compose responsável por um container de banco de dados. Atualmente a aplicação está usando o banco H2 diretamente na memória, o que faz com que os dados sejam perdidos toda vez que a aplicação se encerra. O plano inicial é orquestrar um container criado a partir da imagem MySQL, porém a comunicação entre o container da aplicação e o container MySQL estava falhando, então adotei o banco H2 por questão de tempo.
+
+
 # Desafio Backend Java
 
 ## O Desafio

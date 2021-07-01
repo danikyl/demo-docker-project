@@ -4,6 +4,7 @@ import com.danielsoftware.aplication.domain.dto.SubscriptionNotificationRequest;
 import com.danielsoftware.aplication.domain.model.EventHistory;
 import com.danielsoftware.aplication.domain.model.Status;
 import com.danielsoftware.aplication.domain.model.Subscription;
+import com.danielsoftware.aplication.rabbitmq.subscription.producer.SubscriptionNotificationProducer;
 import com.danielsoftware.aplication.repository.EventHistoryRepository;
 import com.danielsoftware.aplication.repository.StatusRepository;
 import com.danielsoftware.aplication.repository.SubscriptionRepository;
@@ -19,19 +20,22 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final StatusRepository statusRepository;
     private final EventHistoryRepository eventHistoryRepository;
+    private final SubscriptionNotificationProducer subscriptionNotificationProducer;
 
-    SubscriptionServiceImpl(RabbitTemplate rabbitTemplate, StatusRepository statusRepository, SubscriptionRepository subscriptionRepository, EventHistoryRepository eventHistoryRepository) {
+    SubscriptionServiceImpl(RabbitTemplate rabbitTemplate, StatusRepository statusRepository, SubscriptionRepository subscriptionRepository, EventHistoryRepository eventHistoryRepository, SubscriptionNotificationProducer subscriptionNotificationProducer) {
         this.rabbitTemplate = rabbitTemplate;
         this.subscriptionRepository = subscriptionRepository;
         this.statusRepository = statusRepository;
         this.eventHistoryRepository = eventHistoryRepository;
+        this.subscriptionNotificationProducer = subscriptionNotificationProducer;
     }
 
     @Override
     public void publishSubscriptionNotification(SubscriptionNotificationRequest subscriptionNotificationRequest) {
 
-        rabbitTemplate.convertAndSend("spring-boot-exchange", "foo.bar.baz", subscriptionNotificationRequest);
+        subscriptionNotificationProducer.publishNotification(subscriptionNotificationRequest);
     }
+
 
     @Override
     public void processSubscriptionNotification(SubscriptionNotificationRequest notificationRequest) {
@@ -46,14 +50,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             existingSubscription = Subscription.builder().createdAt(LocalDateTime.now()).id(notificationRequest.getSubscriptionId()).build();
         }
         existingSubscription.setStatus(existingStatus);
+        existingSubscription.setUpdatedAt(LocalDateTime.now());
         subscriptionRepository.save(existingSubscription);
 
         eventHistoryRepository.save(EventHistory.builder().createdAt(LocalDateTime.now()).changeType(notificationRequest.getNotificationType()).subscription(existingSubscription).build());
 
-        Iterable<Status> statusList = statusRepository.findAll();
+    }
 
-        Iterable<Subscription> subscriptionList = subscriptionRepository.findAll();
-
-        Iterable<EventHistory> eventHistories = eventHistoryRepository.findAll();
+    @Override
+    public Iterable<Subscription> findAll() {
+        return subscriptionRepository.findAll();
     }
 }

@@ -1,6 +1,6 @@
-package com.danielsoftware.aplication.configuration.security;
+package com.danielsoftware.aplication.configuration;
 
-import com.danielsoftware.aplication.rabbitmq.SubscriptionNotificationReceiver;
+import com.danielsoftware.aplication.rabbitmq.subscription.receiver.SubscriptionNotificationReceiver;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;

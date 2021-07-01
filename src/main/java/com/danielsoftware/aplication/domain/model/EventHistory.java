@@ -3,6 +3,7 @@ package com.danielsoftware.aplication.domain.model;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class EventHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package com.danielsoftware.aplication.rabbitmq;
+package com.danielsoftware.aplication.rabbitmq.subscription.receiver;
 
 import com.danielsoftware.aplication.domain.dto.SubscriptionNotificationRequest;
 import com.danielsoftware.aplication.service.SubscriptionService;

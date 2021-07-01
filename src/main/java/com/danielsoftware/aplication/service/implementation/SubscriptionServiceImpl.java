@@ -9,21 +9,18 @@ import com.danielsoftware.aplication.repository.EventHistoryRepository;
 import com.danielsoftware.aplication.repository.StatusRepository;
 import com.danielsoftware.aplication.repository.SubscriptionRepository;
 import com.danielsoftware.aplication.service.SubscriptionService;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
-    private final RabbitTemplate rabbitTemplate;
     private final SubscriptionRepository subscriptionRepository;
     private final StatusRepository statusRepository;
     private final EventHistoryRepository eventHistoryRepository;
     private final SubscriptionNotificationProducer subscriptionNotificationProducer;
 
-    SubscriptionServiceImpl(RabbitTemplate rabbitTemplate, StatusRepository statusRepository, SubscriptionRepository subscriptionRepository, EventHistoryRepository eventHistoryRepository, SubscriptionNotificationProducer subscriptionNotificationProducer) {
-        this.rabbitTemplate = rabbitTemplate;
+    public SubscriptionServiceImpl(StatusRepository statusRepository, SubscriptionRepository subscriptionRepository, EventHistoryRepository eventHistoryRepository, SubscriptionNotificationProducer subscriptionNotificationProducer) {
         this.subscriptionRepository = subscriptionRepository;
         this.statusRepository = statusRepository;
         this.eventHistoryRepository = eventHistoryRepository;

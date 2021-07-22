@@ -2,8 +2,8 @@
 
 
 ```
-git clone https://github.com/juliocesarnt/globo-danikyl.git
-cd globo-danikyl
+git clone https://github.com/danikyl/demo-docker-project.git
+cd demo-docker-project
 ``` 
 
 ### Compilando e rodando a aplicação
@@ -84,11 +84,6 @@ Esses comandos devem ser o suficiente para inicializar o RabbitMQ, a aplicação
 considerar que temos instalado no meu sistema: Java, Python e Ruby e Docker. Qualquer outra dependência que eu precisar
 você tem que prover.
 
-**Registre tudo**: testes que forem executados, idéias que gostaria de implementar se tivesse tempo (explique como você
-as resolveria, se houvesse tempo), decisões que forem tomadas e seus porquês, arquiteturas que forem testadas, os
-motivos de terem sido modificadas ou abandonadas, instruções de deploy e instalação, etc. Crie um único arquivo
-COMMENTS.md ou HISTORY.md no repositório para isso.
-
 ## Modelo do Banco de Dados
 
 ![Modelo](database_model.png)
@@ -98,19 +93,3 @@ COMMENTS.md ou HISTORY.md no repositório para isso.
 Após as inicialização do ambiente(Docker/Rabbit/Aplicação), executar o script de envio das Notificações e espera-se que
 o status da assinatura esteja conforme as notificações recebidas, além disso deve ter conter todo o histórico de
 notificações para cada assinatura para um possível auditoria.
-
-### O que será avaliado na sua solução?
-
-- Seu código será observado por uma equipe de desenvolvedores que avaliarão a implementação do código, simplicidade e
-  clareza da solução, a arquitetura, estilo de código, testes unitários, testes funcionais, nível de automação dos
-  testes, o design da interface e a documentação.
-
-- Consistência dos dados persistidos.
-
-### Dicas
-
-- Use qualquer ferramenta dentro framework Spring
-
-- Automatize o máximo possível;
-
-- Em caso de dúvidas, pergunte.

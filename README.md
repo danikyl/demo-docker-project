@@ -1,4 +1,4 @@
-### Instalando
+### Installing
 
 
 ```
@@ -6,65 +6,65 @@ git clone https://github.com/danikyl/demo-docker-project.git
 cd demo-docker-project
 ``` 
 
-### Compilando e rodando a aplicação
+### Compiling and running the application
 
 ```
 docker-compose up --build -d
 ``` 
 
-### Rodando python script para enviar as requisições contendo dados do arquivo "notificacoes.txt" e exibir o estado atual das assinaturas no banco de dados, bem como o histórico de eventos
+### Running python script to send the requests containing data from the file "notificacoes.txt" and show the current state from the subscriptions in the database, along with the history of the events
 
 ```
 python sendNotifications.py
 ``` 
-ou então
+or
 ```
 python3 sendNotifications.py
 ``` 
 ### To do
--Adicionar um novo serviço no docker-compose responsável por um container de banco de dados. Atualmente a aplicação está usando o banco H2 diretamente na memória, o que faz com que os dados sejam perdidos toda vez que a aplicação se encerra. O plano inicial é orquestrar um container criado a partir da imagem MySQL, porém a comunicação entre o container da aplicação e o container MySQL estava falhando, então adotei o banco H2 por questão de tempo.
+-Add a new service in docker-compose responsible for a database container. Currently the application is using the H2 bank directly in memory, which causes data to be lost every time the application closes. The initial plan is to orchestrate a container created from the MySQL image, however the communication between the application container and the MySQL container was failing, so I adopted the H2 database as a matter of time.
 
 
-# Desafio Backend Java
+# Java Backend Challenge
 
-## O Desafio
+## The Challenge
 
-### O desafio se trata de atualização das assinatura do usuário de acordo com notificações.
+### The challenge is about updating the user's signature according to notifications.
 
 <img src="DesafioFila.png" width="500" height="500">
 
-#### Tipos de Notificações:
+#### Types of Notifications:
 
-- SUBSCRIPTION_PURCHASED - A Compra foi realizada e a assinatura deve estar com status ativa.
+- SUBSCRIPTION_PURCHASED - The Purchase has been made and the subscription must have an active status.
 
-- SUBSCRIPTION_CANCELED - A Compra foi cancelada e a assinatura deve estar com status cancelada.
+- SUBSCRIPTION_CANCELED - The Purchase has been canceled and the subscription must have a canceled status.
 
-- SUBSCRIPTION_RESTARTED - A Compra foi recuperada e a assinatura deve estar com status ativa.
+- SUBSCRIPTION_RESTARTED - Purchase has been retrieved and subscription must be in active status.
 
-### Etapas
+### Steps
 
-- Recebimento Notificação HTTP
-- Enfileiramento
-- Processamento e Persistencia
+- Receiving HTTP Notification
+- Queuing
+- Processing and Persistence
 
-## Considerações Gerais
+## General considerations
 
-Você deverá usar este repositório como o repo principal do projeto, i.e., todos os seus commits devem estar registrados
-aqui, pois queremos ver como você trabalha.
+You should use this repository as the main project repo, i.e., all your commits must be logged
+here because we want to see how you work.
 
-Esse problema tem algumas constraints:
+This problem has some constraints:
 
-1. Linguagem : Java 8 ou mais atualizada
+1. Language: Java 8 or higher
 
 2. Framework: Spring
 
-3. Database: Qualquer database relacional
+3. Database: Any relational database
 
-4. Deve ser possível conseguir rodar seu código em um Mac OS X OU no Ubuntu;
+4. It should be possible to be able to run your code on Mac OS X OR Ubuntu;
 
-5. O RabbitMQ deve ficar dentro de um compose(Docker)
+5. RabbitMQ must be inside a compose(Docker)
 
-6. Devemos ser capazes de executar o seu código em um ambiente local de alguma forma automatizada:
+6. We should be able to run your code in a local environment in some automated way:
 
    ``` git clone seu-repositorio
     cd seu-repositorio
@@ -74,22 +74,22 @@ Esse problema tem algumas constraints:
     make sendNotifications 
     
     
-    obs: Não necessariamente deve ser dessa forma, mas precisa estar automatizada e documentado.
+    obs: It doesn't necessarily have to be that way, but it needs to be automated and documented.
    ```
 
-7. Devemos ter automatizadas as chamadas para a api com as notificações em anexo no arquivo [notificacoes.txt],
-   obrigatoriamente seguindo a ordem do arquivo (OBS: Pode ser feito em qualquer linguagem de programação).
+7. We should have automated calls to the api with notifications attached in the file [notificacoes.txt],
+    obligatorily following the file order (NOTE: It can be done in any programming language).
 
-Esses comandos devem ser o suficiente para inicializar o RabbitMQ, a aplicação Java e as chamadas para a API. Pode se
-considerar que temos instalado no meu sistema: Java, Python e Ruby e Docker. Qualquer outra dependência que eu precisar
-você tem que prover.
+These commands should be enough to start up RabbitMQ, the Java application and the API calls. can if
+consider that we have installed on my system: Java, Python and Ruby and Docker. Any other dependencies I need
+you have to provide.
 
-## Modelo do Banco de Dados
+## Database Model
 
-![Modelo](database_model.png)
+![Model](database_model.png)
 
-## Execução
+## Execution
 
-Após as inicialização do ambiente(Docker/Rabbit/Aplicação), executar o script de envio das Notificações e espera-se que
-o status da assinatura esteja conforme as notificações recebidas, além disso deve ter conter todo o histórico de
-notificações para cada assinatura para um possível auditoria.
+After the environment initialization (Docker/Rabbit/Application), run the Notifications sending script and it is expected that
+the status of the subscription is in accordance with the notifications received, in addition it must contain the entire history of
+notifications for each subscription for a possible audit.

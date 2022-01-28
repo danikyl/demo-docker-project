@@ -9,32 +9,25 @@ import com.danielsoftware.aplication.repository.EventHistoryRepository;
 import com.danielsoftware.aplication.repository.StatusRepository;
 import com.danielsoftware.aplication.repository.SubscriptionRepository;
 import com.danielsoftware.aplication.service.SubscriptionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final StatusRepository statusRepository;
     private final EventHistoryRepository eventHistoryRepository;
     private final SubscriptionNotificationProducer subscriptionNotificationProducer;
 
-    public SubscriptionServiceImpl(StatusRepository statusRepository, SubscriptionRepository subscriptionRepository, EventHistoryRepository eventHistoryRepository, SubscriptionNotificationProducer subscriptionNotificationProducer) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.statusRepository = statusRepository;
-        this.eventHistoryRepository = eventHistoryRepository;
-        this.subscriptionNotificationProducer = subscriptionNotificationProducer;
-    }
-
-    @Override
     public void publishSubscriptionNotification(SubscriptionNotificationRequest subscriptionNotificationRequest) {
 
         subscriptionNotificationProducer.publishNotification(subscriptionNotificationRequest);
     }
 
 
-    @Override
     public void processSubscriptionNotification(SubscriptionNotificationRequest notificationRequest) {
         String statusName = notificationRequest.getNotificationType().equals("SUBSCRIPTION_CANCELED") ? "canceled" : "active";
         Status existingStatus = this.statusRepository.findByName(statusName);
@@ -54,7 +47,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     }
 
-    @Override
     public Iterable<Subscription> findAll() {
         return subscriptionRepository.findAll();
     }

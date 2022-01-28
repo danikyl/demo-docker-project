@@ -31,7 +31,7 @@ public class SendSubscriptionNotificationAndVerifyPersistedData {
     public void sendSubscriptionsAndVerifyResult() {
         boolean isValid = true;
         SubscriptionNotificationProducer subscriptionNotificationProducer = new SubscriptionNotificationProducer(new RabbitTemplate());
-        SubscriptionService subscriptionService = new SubscriptionServiceImpl(statusRepository, subscriptionRepository, eventHistoryRepository, subscriptionNotificationProducer);
+        SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionRepository, statusRepository, eventHistoryRepository, subscriptionNotificationProducer);
 
         SubscriptionNotificationRequest subscriptionNotificationRequest = SubscriptionNotificationRequest.builder().subscriptionId("testkey123").notificationType("SUBSCRIPTION_PURCHASED").build();
         subscriptionService.processSubscriptionNotification(subscriptionNotificationRequest);

@@ -8,6 +8,7 @@ import com.danielsoftware.aplication.repository.StatusRepository;
 import com.danielsoftware.aplication.repository.SubscriptionRepository;
 import com.danielsoftware.aplication.service.SubscriptionService;
 import com.danielsoftware.aplication.service.implementation.SubscriptionServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
+@RequiredArgsConstructor
 public class SendSubscriptionNotificationAndVerifyPersistedData {
-    @Autowired
-    private SubscriptionRepository subscriptionRepository;
 
-    @Autowired
-    private StatusRepository statusRepository;
+    private final SubscriptionRepository subscriptionRepository;
 
-    @Autowired
-    private EventHistoryRepository eventHistoryRepository;
+    private final StatusRepository statusRepository;
+
+    private final EventHistoryRepository eventHistoryRepository;
 
 
     @Test

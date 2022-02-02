@@ -11,8 +11,8 @@ import com.danielsoftware.aplication.service.implementation.SubscriptionServiceI
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,12 +26,14 @@ public class SendSubscriptionNotificationAndVerifyPersistedData {
 
     private final EventHistoryRepository eventHistoryRepository;
 
+    private final StreamsBuilderFactoryBean streamsBuilderFactoryBean;
+
 
     @Test
     public void sendSubscriptionsAndVerifyResult() {
         boolean isValid = true;
         SubscriptionNotificationProducer subscriptionNotificationProducer = new SubscriptionNotificationProducer(new RabbitTemplate());
-        SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionRepository, statusRepository, eventHistoryRepository, subscriptionNotificationProducer);
+        SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionRepository, statusRepository, eventHistoryRepository, subscriptionNotificationProducer, streamsBuilderFactoryBean);
 
         SubscriptionNotificationRequest subscriptionNotificationRequest = SubscriptionNotificationRequest.builder().subscriptionId("testkey123").notificationType("SUBSCRIPTION_PURCHASED").build();
         subscriptionService.processSubscriptionNotification(subscriptionNotificationRequest);

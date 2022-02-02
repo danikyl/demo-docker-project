@@ -10,5 +10,7 @@ public interface SubscriptionService {
 
     Iterable<Subscription> findAll();
 
+    String getSubscriptionStatus(String id);
+
 
 }

@@ -10,6 +10,11 @@ import com.danielsoftware.aplication.repository.StatusRepository;
 import com.danielsoftware.aplication.repository.SubscriptionRepository;
 import com.danielsoftware.aplication.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StoreQueryParameters;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +26,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final StatusRepository statusRepository;
     private final EventHistoryRepository eventHistoryRepository;
     private final SubscriptionNotificationProducer subscriptionNotificationProducer;
+    private final StreamsBuilderFactoryBean streamsBuilderFactoryBean;
 
     public void publishSubscriptionNotification(SubscriptionNotificationRequest subscriptionNotificationRequest) {
 
@@ -49,5 +55,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     public Iterable<Subscription> findAll() {
         return subscriptionRepository.findAll();
+    }
+
+    public String getSubscriptionStatus(String id) {
+        KafkaStreams kafkaStreams = streamsBuilderFactoryBean.getKafkaStreams();
+        ReadOnlyKeyValueStore<String, String> statusStore = kafkaStreams.store(
+                StoreQueryParameters.fromNameAndType("subscription-status-store", QueryableStoreTypes.keyValueStore())
+        );
+        return statusStore.get(id);
     }
 }

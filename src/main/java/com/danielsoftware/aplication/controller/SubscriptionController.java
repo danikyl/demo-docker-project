@@ -21,4 +21,9 @@ public class SubscriptionController {
     public Iterable<Subscription> findAll() {
         return subscriptionService.findAll();
     }
+
+    @GetMapping(path = "/status/{id}")
+    public String findAll(@PathVariable  String id) {
+        return subscriptionService.getSubscriptionStatus(id);
+    }
 }

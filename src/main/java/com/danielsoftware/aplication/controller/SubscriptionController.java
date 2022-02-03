@@ -18,12 +18,12 @@ public class SubscriptionController {
     }
 
     @GetMapping(path = "/all")
-    public Iterable<Subscription> findAll() {
+    public Iterable<Subscription> getSubscriptionStatus() {
         return subscriptionService.findAll();
     }
 
     @GetMapping(path = "/status/{id}")
-    public String findAll(@PathVariable  String id) {
+    public String getSubscriptionStatus(@PathVariable  String id) {
         return subscriptionService.getSubscriptionStatus(id);
     }
 }

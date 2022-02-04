@@ -4,6 +4,7 @@ import com.danielsoftware.aplication.domain.dto.SubscriptionNotificationRequest;
 import com.danielsoftware.aplication.domain.model.EventHistory;
 import com.danielsoftware.aplication.domain.model.Status;
 import com.danielsoftware.aplication.domain.model.Subscription;
+import com.danielsoftware.aplication.kafka.producer.SubscriptionStatusPublisher;
 import com.danielsoftware.aplication.rabbitmq.subscription.producer.SubscriptionNotificationProducer;
 import com.danielsoftware.aplication.repository.EventHistoryRepository;
 import com.danielsoftware.aplication.repository.StatusRepository;
@@ -27,6 +28,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final EventHistoryRepository eventHistoryRepository;
     private final SubscriptionNotificationProducer subscriptionNotificationProducer;
     private final StreamsBuilderFactoryBean streamsBuilderFactoryBean;
+    private final SubscriptionStatusPublisher subscriptionStatusPublisher;
 
     public void publishSubscriptionNotification(SubscriptionNotificationRequest subscriptionNotificationRequest) {
 
@@ -47,10 +49,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
         existingSubscription.setStatus(existingStatus);
         existingSubscription.setUpdatedAt(LocalDateTime.now());
-        subscriptionRepository.save(existingSubscription);
+        var subscriptionUpdated = subscriptionRepository.save(existingSubscription);
 
         eventHistoryRepository.save(EventHistory.builder().createdAt(LocalDateTime.now()).changeType(notificationRequest.getNotificationType()).subscription(existingSubscription).build());
 
+        subscriptionStatusPublisher.publishSubscriptionStatus(subscriptionUpdated.getId(), subscriptionUpdated.getStatus().getName());
     }
 
     public Iterable<Subscription> findAll() {

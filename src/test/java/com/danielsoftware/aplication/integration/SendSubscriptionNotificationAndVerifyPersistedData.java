@@ -2,6 +2,7 @@ package com.danielsoftware.aplication.integration;
 
 import com.danielsoftware.aplication.domain.dto.SubscriptionNotificationRequest;
 import com.danielsoftware.aplication.domain.model.Subscription;
+import com.danielsoftware.aplication.kafka.producer.SubscriptionStatusPublisher;
 import com.danielsoftware.aplication.rabbitmq.subscription.producer.SubscriptionNotificationProducer;
 import com.danielsoftware.aplication.repository.EventHistoryRepository;
 import com.danielsoftware.aplication.repository.StatusRepository;
@@ -28,12 +29,14 @@ public class SendSubscriptionNotificationAndVerifyPersistedData {
 
     private final StreamsBuilderFactoryBean streamsBuilderFactoryBean;
 
+    private final SubscriptionStatusPublisher subscriptionStatusPublisher;
+
 
     @Test
     public void sendSubscriptionsAndVerifyResult() {
         boolean isValid = true;
         SubscriptionNotificationProducer subscriptionNotificationProducer = new SubscriptionNotificationProducer(new RabbitTemplate());
-        SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionRepository, statusRepository, eventHistoryRepository, subscriptionNotificationProducer, streamsBuilderFactoryBean);
+        SubscriptionService subscriptionService = new SubscriptionServiceImpl(subscriptionRepository, statusRepository, eventHistoryRepository, subscriptionNotificationProducer, streamsBuilderFactoryBean, subscriptionStatusPublisher);
 
         SubscriptionNotificationRequest subscriptionNotificationRequest = SubscriptionNotificationRequest.builder().subscriptionId("testkey123").notificationType("SUBSCRIPTION_PURCHASED").build();
         subscriptionService.processSubscriptionNotification(subscriptionNotificationRequest);

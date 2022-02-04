@@ -23,7 +23,7 @@ public class SubscriptionController {
     }
 
     @GetMapping(path = "/status/{id}")
-    public String getSubscriptionStatus(@PathVariable  String id) {
+    public String getSubscriptionStatus(@PathVariable String id) {
         return subscriptionService.getSubscriptionStatus(id);
     }
 }

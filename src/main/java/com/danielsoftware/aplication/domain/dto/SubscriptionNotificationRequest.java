@@ -13,9 +13,10 @@ import java.io.Serializable;
 @Builder
 @Data
 public class SubscriptionNotificationRequest implements Serializable {
-    @JsonProperty("notification_type")
-    private String notificationType;
 
     @JsonProperty("subscription")
     private String subscriptionId;
+
+    @JsonProperty("notification_type")
+    private String notificationType;
 }
